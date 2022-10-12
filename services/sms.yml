@@ -78,21 +78,31 @@ bind:
     details: Supply your own list of special characters to use for string generation.
   user_inputs: []
   computed_inputs:
-  - name: domain
-    default: ${request.plan_properties["domain"]}
-    overwrite: true
-    type: ""
-  - name: address
-    default: ${instance.details["email"]}
-    overwrite: true
-    type: ""
+    - name: region
+      default: ${instance.details["region"]}
+      overwrite: true
+      type: string
+    - name: user_name
+      default: csb-${instance.name}-${request.binding_id}
+      overwrite: true
+      type: string
+    - name: instance_name
+      type: string
+      default: ${request.instance_id}
   outputs:
   - required: true
-    field_name: uri
+    field_name: aws_access_key_id
     type: string
-    details: The uri to use to connect to this service
+    details: The AWS access key to send SMS via API
+  - required: true
+    field_name: aws_secret_access_key
+    type: string
+    details: The AWS secret access key to send SMS via API
   template_refs:
     main: "services/terraform/bind/main.tf"
+    outputs: "services/terraform/bind/outputs.tf"
+    variables: "services/terraform/bind/variables.tf"
+    provider: "services/terraform/bind/provider.tf"
 examples:
 - name: Example
   description: Examples are used for documenting your service AND as integration tests.

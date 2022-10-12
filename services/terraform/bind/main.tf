@@ -1,21 +1,39 @@
-variable domain {
-    type = string
+locals {
+  instance_id = "sns-${substr(sha256(var.instance_name), 0, 16)}"
+  user_name   = "${local.instance_id}-${var.user_name}-${var.region}"
 }
 
-variable address {
-    type = string
+resource "aws_iam_user" "user" {
+  name = local.user_name
+  path = "/cf/"
 }
 
-variable password_special_chars {
-    type = string
+resource "aws_iam_access_key" "access_key" {
+  user = aws_iam_user.user.name
 }
 
-resource "random_string" "password" {
-    length = 16
-    special = true
-    override_special = var.password_special_chars
-}
+resource "aws_iam_user_policy" "user_policy" {
+  name = format("%s-p", local.user_name)
 
-output uri {
-    value = "smtp://${var.address}:${random_string.password.result}@smtp.${var.domain}"
+  user = aws_iam_user.user.name
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Deny"
+        Action = [
+          "sns:Publish"
+        ]
+        Resource = "arn:aws:sns:*:*:*"
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "sns:Publish"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
 }
