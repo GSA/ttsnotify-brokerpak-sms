@@ -1,2 +1,3 @@
-domain   = "gsa.gov"
-username = "user"
+region        = "us-west-2"
+sender_id     = "Notify-Gov"
+instance_name = "instance-user"

@@ -1,8 +1,8 @@
 packversion: 1
-name: my-services-pack
+name: ttsnotify-brokerpak-sms
 version: current
 metadata:
-  author: me@example.com
+  author: Ryan Ahearn
 platforms:
 - os: linux
   arch: amd64
@@ -10,13 +10,17 @@ terraform_binaries:
 - name: terraform
   version: 0.13.7
   source: https://github.com/hashicorp/terraform/archive/v0.13.7.zip
-- name: terraform-provider-random
-  version: 2.2.1
-  source: https://releases.hashicorp.com/terraform-provider-random/2.2.1/terraform-provider-random_2.2.1_linux_amd64.zip
+- name: terraform-provider-aws
+  version: 4.34.0
+  source: https://github.com/terraform-providers/terraform-provider-aws/archive/v4.34.0.zip
 service_definitions:
-- services/example-service-definition.yml
-parameters:
-- name: MY_ENVIRONMENT_VARIABLE
-  description: Set this to whatever you like.
-required_env_variables: []
-env_config_mapping: {}
+- services/sms.yml
+parameters: []
+required_env_variables:
+  - AWS_ACCESS_KEY_ID
+  - AWS_SECRET_ACCESS_KEY
+  - AWS_DEFAULT_REGION
+env_config_mapping:
+  AWS_ACCESS_KEY_ID: aws.access_key_id
+  AWS_SECRET_ACCESS_KEY: aws.secret_access_key
+  AWS_DEFAULT_REGION: aws.default_region

@@ -3,6 +3,7 @@
 
 variable "service_name" {
   type = string
+  default = "sms"
 }
 
 locals {
@@ -46,9 +47,10 @@ module "broker_policy" {
     "Statement":
       [
         {
-          "Effect":"Allow",
-          "Action":[
-            "TKTK:*"
+          "Effect": "Allow",
+          "Action": [
+            "sns:GetSMSAttributes",
+            "sns:SetSMSAttributes"
           ],
           "Resource":"*"
         },
@@ -61,6 +63,13 @@ module "broker_policy" {
 
               "iam:CreateAccessKey",
               "iam:DeleteAccessKey",
+
+              "iam:CreateRole",
+              "iam:DeleteRole",
+              "iam:GetRole",
+              "iam:GetRolePolicy",
+              "iam:PutRolePolicy",
+              "iam:DeleteRolePolicy",
 
               "iam:GetUserPolicy",
               "iam:PutUserPolicy",
