@@ -1,8 +1,8 @@
 
 .DEFAULT_GOAL := help
 
-SERVICE_NAME=example-service
-PLAN_NAME=example-email-plan
+SERVICE_NAME=ttsnotify-sms
+PLAN_NAME=base
 
 DOCKER_OPTS=--rm -v $(PWD):/brokerpak -w /brokerpak
 CSB=ghcr.io/gsa/cloud-service-broker:v0.10.0gsa
@@ -84,18 +84,47 @@ up: .env.secrets ## Run the broker service with the brokerpak configured. The br
 
 test: .env.secrets  ## Execute the brokerpak examples against the running broker
 	@echo "Running examples..."
+	$(CSB_EXEC) client run-examples
+
+provision: ## Provision an SMS instance
 	@( \
 	set -e ;\
 	eval "$$( $(CSB_SET_IDS) )" ;\
-	$(CSB_EXEC) client run-examples \
+	echo "Provisioning ${SERVICE_NAME}:${PLAN_NAME}:${INSTANCE_NAME}" ;\
+	$(CSB_EXEC) client provision --serviceid $$serviceid --planid $$planid --instanceid ${INSTANCE_NAME} --params $(CLOUD_PROVISION_PARAMS) 2>&1 > ${INSTANCE_NAME}.provisioning.txt ;\
+	$(CSB_INSTANCE_WAIT) ${INSTANCE_NAME} ;\
 	)
 
+bind: provision ## Bind an SMS instance and output the bound credentials
+	@( \
+	set -e ;\
+	eval "$$( $(CSB_SET_IDS) )" ;\
+	echo "Binding ${SERVICE_NAME}:${PLAN_NAME}:${INSTANCE_NAME}:binding" ;\
+	$(CSB_EXEC) client bind --serviceid $$serviceid --planid $$planid --instanceid ${INSTANCE_NAME} --bindingid binding --params $(CLOUD_BIND_PARAMS) | jq -r .response > ${INSTANCE_NAME}.binding.json ;\
+	)
 
-down: ## Bring the cloud-service-broker service down
+unbind: ## Unbind an SMS instance
+	@echo "Unbinding the ${SERVICE_NAME} instance"
+	@( \
+	set -e ;\
+	eval "$$( $(CSB_SET_IDS) )" ;\
+	$(CSB_EXEC) client unbind --serviceid $$serviceid --planid $$planid --instanceid ${INSTANCE_NAME} --bindingid binding 2>&1 >> ${INSTANCE_NAME}.binding.json || true ;\
+	)
+
+deprovision: unbind ## Deprovision the service instance
+	@echo "Deprovisioning ${SERVICE_NAME}:${PLAN_NAME}:${INSTANCE_NAME}" || tee -a ${INSTANCE_NAME}.provisioning.txt
+	@( \
+	set -e ;\
+	eval "$$( $(CSB_SET_IDS) )" ;\
+	$(CSB_EXEC) client deprovision --serviceid $$serviceid --planid $$planid --instanceid ${INSTANCE_NAME} 2>&1 >> ${INSTANCE_NAME}.provisioning.txt || true ;\
+	$(CSB_INSTANCE_WAIT) ${INSTANCE_NAME} || true;\
+	)
+
+down: deprovision ## Bring the cloud-service-broker service down
 	@-docker stop csb-service-$(SERVICE_NAME)
 
 all: clean build up test down ## Clean and rebuild, then bring up the server, run the examples, and bring the system down
-.PHONY: all clean build up test down
+.PHONY: all clean build up test down provision bind unbind deprovision
 
 .env.secrets:
 	$(error Copy .env.secrets-template to .env.secrets, then edit in your own values)

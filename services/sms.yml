@@ -20,6 +20,7 @@ provision:
       type: string
       details: The region of the SNS service.
       default: ${config("aws.default_region")}
+      prohibit_update: true
       enum:
         us-east-2 : us-east-2
         us-east-1 : us-east-1
@@ -46,10 +47,12 @@ provision:
       tyle: string
       details: Default Sender ID. Not currently used in US.
       default: "Notify-Gov"
+      prohibit_update: false
     - field_name: monthly_spend_limit
       type: number
       details: SMS budget limit in USD. Support request must be made before raising above 1
       default: 1
+      prohibit_update: false
   computed_inputs:
     - name: labels
       default: ${json.marshal(request.default_labels)}
@@ -72,10 +75,6 @@ provision:
     provider: "services/terraform/provision/provider.tf"
 bind:
   plan_inputs:
-  - required: true
-    field_name: password_special_chars
-    type: string
-    details: Supply your own list of special characters to use for string generation.
   user_inputs: []
   computed_inputs:
     - name: region
@@ -104,11 +103,11 @@ bind:
     variables: "services/terraform/bind/variables.tf"
     provider: "services/terraform/bind/provider.tf"
 examples:
-- name: Example
-  description: Examples are used for documenting your service AND as integration tests.
-  plan_id: 00000000-0000-0000-0000-000000000001
+- name: Setup & teardown
+  description: Create SMS settings and bind a user in the us-west-2 region.
+  plan_id: b1f26b91-01b4-4d73-8bc6-a213cadaccb6
   provision_params:
-    username: my-account
+    region: us-west-2
   bind_params: {}
-plan_updateable: false
+plan_updateable: true
 requiredenvvars: []

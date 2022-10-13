@@ -2,6 +2,11 @@ variable "region" {
   type = string
 }
 
+variable "instance_name" {
+  type    = string
+  default = ""
+}
+
 variable "sender_id" {
   type = string
 }

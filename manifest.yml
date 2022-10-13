@@ -1,8 +1,8 @@
 packversion: 1
-name: my-services-pack
+name: ttsnotify-brokerpak-sms
 version: current
 metadata:
-  author: me@example.com
+  author: Ryan Ahearn
 platforms:
 - os: linux
   arch: amd64

@@ -1,6 +1,5 @@
 locals {
-  instance_id = "sns-${substr(sha256(var.instance_name), 0, 16)}"
-  user_name   = "${local.instance_id}-${var.user_name}-${var.region}"
+  user_name = "sns-${var.region}-${var.user_name}"
 }
 
 resource "aws_iam_user" "user" {
