@@ -1,13 +1,31 @@
 # This Terraform code will create an AWS user named "ssb-${var.service_name}-broker" with the
 # minimum policies in place that are needed for this brokerpak to operate.
 
+terraform {
+  required_version = "~> 1.0"
+  required_providers {
+    aws = {
+      version = "~> 4.34"
+    }
+  }
+}
+
+provider "aws" {
+  region  = var.region
+}
+
+variable "region" {
+  type    = string
+  default = "us-west-2"
+}
+
 variable "service_name" {
-  type = string
+  type    = string
   default = "sms"
 }
 
 locals {
-  this_aws_account_id    = data.aws_caller_identity.current.account_id
+  this_aws_account_id = data.aws_caller_identity.current.account_id
 }
 
 data "aws_caller_identity" "current" {}
