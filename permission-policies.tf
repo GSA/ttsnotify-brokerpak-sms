@@ -30,6 +30,10 @@ locals {
 
 data "aws_caller_identity" "current" {}
 
+data "aws_iam_policy" "administrator-access" {
+  name = "AdministratorAccess"
+}
+
 module "ssb_broker_user" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-user"
   version = "~> 4.2.0"
