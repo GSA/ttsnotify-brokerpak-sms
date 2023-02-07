@@ -22,6 +22,8 @@ provision:
       default: ${config("aws.default_region")}
       prohibit_update: true
       enum:
+        us-gov-west-1: us-gov-west-1
+        us-gov-east-1: us-gov-east-1
         us-east-2 : us-east-2
         us-east-1 : us-east-1
         us-west-1 : us-west-1
