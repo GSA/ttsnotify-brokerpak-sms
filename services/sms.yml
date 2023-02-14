@@ -7,6 +7,8 @@ image_url: https://example.com/icon.jpg
 documentation_url: https://aws.amazon.com/sns/
 support_url: https://github.com/GSA/ttsnotify-brokerpak-sms
 tags: [aws, sns, preview]
+metadata:
+  shareable: true
 plans:
 - name: base
   id: b1f26b91-01b4-4d73-8bc6-a213cadaccb6
