@@ -79,7 +79,14 @@ provision:
     provider: "services/terraform/provision/provider.tf"
 bind:
   plan_inputs:
-  user_inputs: []
+  user_inputs:
+    - field_name: source_ips
+      type: array
+      default:
+        - 52.222.122.97/32
+        - 52.222.123.172/32
+      details: IP Ranges that requests to SNS must come from
+      prohibit_update: false
   computed_inputs:
     - name: region
       default: ${instance.details["region"]}

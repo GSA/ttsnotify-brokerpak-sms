@@ -32,6 +32,11 @@ resource "aws_iam_user_policy" "user_policy" {
           "sns:Publish"
         ]
         Resource = "*"
+        Condition = {
+          "ForAnyValue:IpAddress" = {
+            "aws:SourceIp" = var.source_ips
+          }
+        }
       }
     ]
   })

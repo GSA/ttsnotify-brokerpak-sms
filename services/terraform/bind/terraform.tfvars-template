@@ -1,3 +1,6 @@
-region        = "us-west-2"
-instance_name = "instance-yourname"
-user_name     = "csb-test"
+region    = "us-west-2"
+user_name = "csb-test"
+source_ips = [
+  "52.222.122.97/32",
+  "52.222.123.172/32"
+]
