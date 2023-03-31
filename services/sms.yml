@@ -82,7 +82,7 @@ bind:
   user_inputs:
     - field_name: source_ips
       type: array
-      default:
+      default: # cloud.gov egress ips: https://cloud.gov/docs/management/static-egress/#cloudgov-egress-ranges
         - 52.222.122.97/32
         - 52.222.123.172/32
       details: IP Ranges that requests to SNS must come from
