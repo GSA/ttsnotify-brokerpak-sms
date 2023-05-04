@@ -29,7 +29,8 @@ resource "aws_iam_user_policy" "user_policy" {
       {
         Effect = "Allow"
         Action = [
-          "sns:Publish"
+          "sns:Publish",
+          "logs:FilterLogEvents"
         ]
         Resource = "*"
         Condition = {
@@ -37,13 +38,6 @@ resource "aws_iam_user_policy" "user_policy" {
             "aws:SourceIp" = var.source_ips
           }
         }
-      },
-      {
-        Action: [
-          "logs:FilterLogEvents"
-        ],
-        Effect: "Allow",
-        Resource: "*"
       }
     ]
   })
