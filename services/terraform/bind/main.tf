@@ -37,6 +37,13 @@ resource "aws_iam_user_policy" "user_policy" {
             "aws:SourceIp" = var.source_ips
           }
         }
+      },
+      {
+        Action: [
+          "logs:FilterLogEvents"
+        ],
+        Effect: "Allow",
+        Resource: "*"
       }
     ]
   })
