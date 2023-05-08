@@ -1,5 +1,6 @@
 locals {
-  user_name = "sns-${var.region}-${var.user_name}"
+  user_name     = "sns-${var.region}-${var.user_name}"
+  arn_partition = (var.region == "us-gov-west-1" ? "aws-us-gov" : "aws")
 }
 
 resource "aws_iam_user" "user" {
@@ -24,7 +25,7 @@ resource "aws_iam_user_policy" "user_policy" {
         Action = [
           "sns:Publish"
         ]
-        Resource = "arn:aws:sns:*:*:*"
+        Resource = "arn:${local.arn_partition}:sns:*:*:*"
       },
       {
         Effect = "Allow"
