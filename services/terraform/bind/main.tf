@@ -36,7 +36,7 @@ resource "aws_iam_user_policy" "user_policy" {
         Resource = "*"
         Condition = {
           "ForAnyValue:IpAddress" = {
-            "aws:SourceIp" = var.source_ips
+            "aws:SourceIp" = var.source_ips     # if we can publish on staging, why can't we filter?
           }
         }
       }
