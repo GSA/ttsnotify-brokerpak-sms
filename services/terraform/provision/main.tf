@@ -27,6 +27,7 @@ resource "aws_iam_role" "sns_success_feedback_role" {
           Action = [
             "logs:CreateLogGroup",
             "logs:CreateLogStream",
+            "logs:FilterLogEvents",
             "logs:PutLogEvents",
             "logs:PutMetricFilter",
             "logs:PutRetentionPolicy"
