@@ -77,6 +77,11 @@ module "broker_policy" {
         },
         {
           "Effect": "Allow",
+          "Action": "mobiletargeting:PhoneNumberValidate",
+          "Resource": "*"
+        },
+        {
+          "Effect": "Allow",
           "Action": [
               "iam:CreateUser",
               "iam:DeleteUser",
