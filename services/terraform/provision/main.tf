@@ -50,9 +50,9 @@ resource "aws_iam_policy" "passrole_policy" {
         Resource = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/sns-614c3d7c84b47455-SuccessFeedback"
       },
       {
-        Action = ["iam:GetPolicy", "iam:GetPolicyVersion"],
+        Action = ["iam:GetPolicy", "iam:GetPolicyVersion", "iam:ListPolicyVersions"],
         Effect = "Allow",
-        Resource = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/sns-614c3d7c84b47455-SuccessFeedback"
+        Resource = "*"
       }
     ]
   })
