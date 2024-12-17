@@ -37,6 +37,24 @@ resource "aws_iam_role" "sns_success_feedback_role" {
 
 data "aws_caller_identity" "current" {}
 
+resource "aws_iam_policy" "get_policy_permissions" {
+  name = "IAMReadPolicyPermissions"
+  description = "Policy to allow reading IAM policies and versions"
+  policy = jsonencode({
+    Statement = [
+      {
+        Action = ["iam:GetPolicy", "iam:GetPolicyVersion"],
+        Effect = "Allow",
+        Resource = "arn:aws:iam:${data.aws_caller_identity.current.account_id}:policy/PassRolePolicy"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_user_policy_attachment" "attach_get_policy" {
+  user = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:user/ssb-sms-cicd-broker"
+  policy_arn = "aws_iam_policy.get_policy_permissions.arn
+}
 resource "aws_iam_policy" "passrole_policy" {
   name = "PassRolePolicy"
   description = "Policy to allow iam:PassRole on specific role"
@@ -53,7 +71,7 @@ resource "aws_iam_policy" "passrole_policy" {
 }
 
 resource "aws_iam_user_policy_attachment" "attach_passrole" {
-  user = ""
+  user = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:user/ssb-sms-cicd-broker"
   policy_arn = aws_iam_policy.passrole_policy.arn
 }
 
