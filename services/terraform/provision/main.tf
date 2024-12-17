@@ -39,7 +39,7 @@ data "aws_caller_identity" "current" {}
 
 
 resource "aws_iam_policy" "passrole_policy" {
-  name = "PassRolePolicy"
+  name = "PassRolePolicySF"
   description = "Policy to allow iam:PassRole on specific role"
   policy = jsonencode ({
     Version = "2012-10-17",
