@@ -30,7 +30,8 @@ resource "aws_iam_role" "sns_success_feedback_role" {
             "logs:FilterLogEvents",
             "logs:PutLogEvents",
             "logs:PutMetricFilter",
-            "logs:PutRetentionPolicy"
+            "logs:PutRetentionPolicy",
+            "logs:StartQuery"
           ]
           Effect   = "Allow"
           Resource = "*"
