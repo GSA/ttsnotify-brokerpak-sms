@@ -53,8 +53,9 @@ resource "aws_iam_policy" "get_policy_permissions" {
 
 resource "aws_iam_user_policy_attachment" "attach_get_policy" {
   user = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:user/ssb-sms-cicd-broker"
-  policy_arn = "aws_iam_policy.get_policy_permissions.arn
+  policy_arn = aws_iam_policy.get_policy_permissions.arn
 }
+
 resource "aws_iam_policy" "passrole_policy" {
   name = "PassRolePolicy"
   description = "Policy to allow iam:PassRole on specific role"
