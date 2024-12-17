@@ -25,13 +25,7 @@ resource "aws_iam_role" "sns_success_feedback_role" {
       Statement = [
         {
           Action = [
-            "logs:CreateLogGroup",
-            "logs:CreateLogStream",
-            "logs:FilterLogEvents",
-            "logs:PutLogEvents",
-            "logs:PutMetricFilter",
-            "logs:PutRetentionPolicy",
-            "logs:StartQuery"
+            "logs:*"
           ]
           Effect   = "Allow"
           Resource = "*"
@@ -39,6 +33,26 @@ resource "aws_iam_role" "sns_success_feedback_role" {
       ]
     })
   }
+}
+
+resource "aws_iam_policy" "passrole_policy" {
+  name = "PassRolePolicy"
+  description = "Policy to allow iam:PassRole on specific role"
+  policy = jsonencode ({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Action = "iam:PassRole",
+        Effect = "Allow",
+        Resource = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/sns-614c3d7c84b47455-SuccessFeedback"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_user_policy_attachment" "attach_passrole" {
+  user = ""
+  policy_arn = aws_iam_policy.passrole_policy.arn
 }
 
 resource "aws_sns_sms_preferences" "sms_settings" {
