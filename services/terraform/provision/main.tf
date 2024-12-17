@@ -35,6 +35,8 @@ resource "aws_iam_role" "sns_success_feedback_role" {
   }
 }
 
+data "aws_caller_identity" "current" {}
+
 resource "aws_iam_policy" "passrole_policy" {
   name = "PassRolePolicy"
   description = "Policy to allow iam:PassRole on specific role"
