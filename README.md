@@ -1,5 +1,9 @@
 # template-brokerpak
 
+> [!WARNING]
+>
+> This repository has been archived and dependencies are out of date. If being revived in the future, we recommend starting from https://workshop.cloud.gov/cloud-gov/notifications/ttsnotify-brokerpak-sms which has had some updates completed.
+
 ## Why this project
 
 _This is a template repository that can be cloned by anyone who wants to develop a brokerpak for their own services. Fork or copy this repository, and edit references to XXXX to refer to your own team or service provider._
